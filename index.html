@@ -143,6 +143,23 @@ const storageRemove=k=>{try{localStorage.removeItem(k)}catch{}};
 const readStore=k=>{try{return JSON.parse(storageGet(k)||'null')}catch{return null}};
 const saveStore=(k,v)=>storageSet(k,JSON.stringify(v));
 const key=d=>d[1]+'|'+d[2];
+// 읽기 표시에서는 가타카나도 모두 히라가나로 변환합니다.
+// 원래 단어 표기와 저장용 식별자는 변경하지 않습니다.
+function hiraganaReading(value){
+ const kana=String(value).replace(/[ァ-ヶ]/g,ch=>String.fromCharCode(ch.charCodeAt(0)-0x60));
+ const vowelMap={
+  あ:'あ',か:'あ',さ:'あ',た:'あ',な:'あ',は:'あ',ま:'あ',や:'あ',ら:'あ',わ:'あ',が:'あ',ざ:'あ',だ:'あ',ば:'あ',ぱ:'あ',ぁ:'あ',ゃ:'あ',
+  い:'い',き:'い',し:'い',ち:'い',に:'い',ひ:'い',み:'い',り:'い',ぎ:'い',じ:'い',ぢ:'い',び:'い',ぴ:'い',ぃ:'い',
+  う:'う',く:'う',す:'う',つ:'う',ぬ:'う',ふ:'う',む:'う',ゆ:'う',る:'う',ぐ:'う',ず:'う',づ:'う',ぶ:'う',ぷ:'う',ぅ:'う',ゅ:'う',ゔ:'う',
+  え:'え',け:'え',せ:'え',て:'え',ね:'え',へ:'え',め:'え',れ:'え',げ:'え',ぜ:'え',で:'え',べ:'え',ぺ:'え',ぇ:'え',
+  お:'お',こ:'お',そ:'お',と:'お',の:'お',ほ:'お',も:'お',よ:'お',ろ:'お',を:'お',ご:'お',ぞ:'お',ど:'お',ぼ:'お',ぽ:'お',ぉ:'お',ょ:'お'
+ };
+ return kana.replace(/ー/g,(match,index)=>{
+   for(let i=index-1;i>=0;i--){if(vowelMap[kana[i]])return vowelMap[kana[i]];if(!/[っ゛゜]/.test(kana[i]))break;}
+   return 'う';
+ });
+}
+
 const shuffle=a=>{for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
 
 // 이 버전은 기존 오류가 있던 암기/회독 기록을 가져오지 않습니다.
@@ -218,7 +235,7 @@ function render(){
  $('word').replaceChildren();$('meaning').textContent='';
  $('showReading').textContent='후리가나 보기';$('showMeaning').textContent='한국어 뜻 보기';
  if(d){
-   const r=document.createElement('div');r.className='reading-line hidden';r.textContent=d[2];
+   const r=document.createElement('div');r.className='reading-line hidden';r.textContent=hiraganaReading(d[2]);
    const w=document.createElement('div');w.className='kanji-line';
    if(d[1].length>=15)w.classList.add('xlong');else if(d[1].length>=9)w.classList.add('long');
    w.textContent=d[1];$('word').append(r,w);
