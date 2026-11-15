@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f5f6f9">
+<title>칸지외우자</title>
+<style>
+:root {font-family:system-ui,-apple-system,'Noto Sans KR','Noto Sans JP',sans-serif;color-scheme:light;--ink:#202639;--sub:#717889;--primary:#314b83;--stroke:#dfe3ec;--bg:#f5f6f9}
+* {box-sizing:border-box}
+body {margin:0;background:var(--bg);color:var(--ink)}
+button,select {font:inherit;cursor:pointer}
+button:focus-visible,select:focus-visible {outline:3px solid #9ab9fa;outline-offset:2px}
+.wrap {max-width:720px;margin:auto;padding:25px 18px 48px}
+.eyebrow {font-size:13px;color:var(--primary);font-weight:750;letter-spacing:.08em;margin-bottom:5px}
+h1 {font-size:clamp(24px,5.5vw,31px);margin:0 0 9px;letter-spacing:-.04em}
+.intro {color:var(--sub);margin:0 0 25px;font-size:12px;line-height:1.6}
+.section-title {font-weight:750;font-size:15px;margin:0 0 11px}
+.courses {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-bottom:22px}
+.personal-courses{grid-template-columns:1fr;margin-bottom:22px}
+.personal-courses .course{min-height:105px}
+.students-heading{margin-top:3px}
+
+.course {text-align:left;background:white;border:2px solid var(--stroke);border-radius:18px;padding:18px 16px;min-height:128px;display:flex;flex-direction:column;justify-content:space-between;gap:12px;transition:border-color .15s,background .15s}
+.course.active {border-color:var(--primary);background:#f0f4ff;box-shadow:0 4px 16px #243e7711}
+.course-name {font-size:16px;font-weight:800;line-height:1.4;word-break:keep-all}
+.course-desc {color:#6e778a;font-size:12px;line-height:1.45}
+.course-count {color:var(--primary);font-weight:750;font-size:12px}
+.section-head {display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}
+.selected-title {font-size:19px;font-weight:800;margin:0;line-height:1.4}
+.selected-subtitle {font-size:13px;color:var(--sub);margin:5px 0 16px;line-height:1.5}
+.filters {display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:15px}
+.filters select {background:white;border:1px solid var(--stroke);border-radius:11px;padding:12px 10px;width:100%;min-width:0;color:var(--ink);font-size:14px}
+.student-picker {display:block;width:100%;margin:0 0 20px;padding:16px 14px;background:#fff;border:1px solid var(--stroke);border-radius:13px;color:var(--ink);font-size:16px}
+.filters #orderMode {grid-column:auto}
+.panel {background:white;border-radius:22px;padding:24px;box-shadow:0 5px 25px #192c4e0b}
+.top {display:flex;align-items:center;justify-content:space-between;gap:9px}
+.topright {display:flex;align-items:center;gap:11px}
+.stats {color:#7b8290;font-size:13px;line-height:1.5}
+.star {width:47px;height:47px;border-radius:50%;padding:0;border:2px solid #dcdfe7;background:white;color:#aab0bd;font-size:27px;display:grid;place-items:center;line-height:1}
+.star.active {color:#df9e00;background:#fff5c9;border-color:#e8c34a}
+.star:disabled {opacity:.38;cursor:default}
+.bar {height:7px;border-radius:9px;background:#e8ebf1;margin:18px 0;overflow:hidden}
+.fill {height:100%;width:0;background:#4b67a0;border-radius:9px;transition:width .18s}
+.word {min-height:186px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px;text-align:center;margin:12px 0 8px;overflow-wrap:anywhere}
+.reading-line {font-size:clamp(20px,5vw,29px);color:#3457a0;line-height:1.3;min-height:38px;letter-spacing:.04em;font-weight:500}
+.reading-line.hidden {visibility:hidden}
+.kanji-line {font-size:clamp(42px,9.7vw,78px);line-height:1.35;font-weight:780;max-width:100%}
+.kanji-line.long{font-size:clamp(32px,7vw,54px)}
+.kanji-line.xlong{font-size:clamp(26px,6vw,39px)}
+.meaning {min-height:68px;font-size:clamp(19px,5vw,25px);font-weight:600;text-align:center;display:flex;align-items:center;justify-content:center;line-height:1.4;padding:4px 10px}
+.buttons {display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:10px}
+.action {padding:14px 9px;min-height:54px;background:white;color:var(--ink);border:1px solid var(--stroke);border-radius:12px;font-size:15px;font-weight:650}
+.action.primary {background:var(--primary);color:white;border:1px solid var(--primary)}
+.action:disabled {opacity:.4;cursor:default}
+#startNext{background:#252d44;color:#fff;border:0;border-radius:12px;min-height:54px;padding:14px;font-size:16px;font-weight:750;cursor:pointer}
+.hint {font-size:12px;color:#858b97;text-align:center;line-height:1.7;margin:16px 0 0}
+.empty {padding:38px 22px;text-align:center;background:white;border-radius:20px;border:1px dashed #cbd2df}
+.empty .emoji {font-size:37px;margin-bottom:14px}
+.empty h3 {font-size:19px;margin:0 0 8px}
+.empty p {color:#6f7686;font-size:14px;line-height:1.7;margin:0}
+.hidden-ui {display:none !important}
+.foot {font-size:12px;color:#9098a8;text-align:center;margin:20px 0 0;line-height:1.6}
+@media(max-width:480px){.wrap{padding:17px 12px 34px}.intro{margin-bottom:20px}.courses{gap:8px;margin-bottom:20px}.course{padding:14px 11px;min-height:134px;border-radius:15px}.course-name{font-size:14px}.personal-courses .course{min-height:102px}.kanji-line.long{font-size:clamp(29px,7vw,43px)}.kanji-line.xlong{font-size:clamp(23px,5.7vw,34px)}.course-desc{font-size:11px}.selected-title{font-size:17px}.panel{padding:19px 14px;border-radius:18px}.filters select{font-size:13px;padding:12px 8px}.word{min-height:173px;gap:26px}.meaning{min-height:72px}.stats{font-size:12px}.topright{gap:7px}.star{width:44px;height:44px;min-width:44px}.action{font-size:14px;padding:12px 5px}.hint{font-size:11px}}
+[hidden]{display:none!important}</style>
+</head>
+<body>
+<main class="wrap">
+  <h1>칸지외우자</h1>
+  <p class="intro">진우씨가 만듦</p>
+  <div class="section-title">학습 영역 선택</div>
+  <select id="coursePicker" class="student-picker" aria-label="학습 영역 선택">
+    <option value="jinwoo">3주차 1~3일차 (진우꺼)</option>
+    <option value="student12">12과 다카라즈카</option>
+    <option value="student13">13과 할로윈</option>
+    <option value="student18">18과 취직활동</option>
+    <option value="student19">19과 연호</option>
+  </select>
+  <section aria-label="선택한 과목">
+    <div class="section-head"><h2 class="selected-title" id="selectedTitle">3주차 1~3일차 (진우꺼)</h2></div>
+    <p class="selected-subtitle" id="selectedSubtitle"></p>
+    <div id="studyArea">
+      <div class="filters">
+        <select id="mode" aria-label="복습 대상">
+          <option value="all">전체 단어</option>
+          <option value="wrong">틀린 단어만</option>
+          <option value="favorite">★ 즐겨찾기만</option>
+        </select>
+        <select id="orderMode" aria-label="학습 순서">
+          <option value="ordered">순서대로</option>
+          <option value="random">🔀 순서 섞기</option>
+        </select>
+      </div>
+      <div class="panel"><div id="retryPrompt" hidden style="text-align:center;padding:28px 12px">
+<div style="font-size:38px;margin-bottom:10px">📖</div>
+<h2 style="font-size:23px;margin:0 0 10px">못 외운 단어를 다시 외워봐요!</h2>
+<p style="color:#697386;line-height:1.6">이번에 다시 볼 단어가 <strong id="retryCount">0</strong>개 있어요.<br>준비되면 이어서 공부해요.</p>
+<button class="primary" id="beginRetry" type="button" style="width:100%;margin-top:12px">다시 외우기</button>
+</div><div id="roundInfo" style="font-weight:750;color:#3655a0;margin-bottom:10px" aria-live="polite">1회독 · 1차 학습</div><div id="roundDone" hidden style="text-align:center;padding:28px 8px"><div style="font-size:36px">🎉</div><h2 id="roundDoneTitle">1회독 끝!</h2><p id="roundDoneText">모든 단어를 외웠어요.</p><button class="primary" id="startNext" type="button" style="width:100%;margin-top:10px">2회독 시작</button></div><div id="studyContent">
+        <div class="top"><span class="stats" id="count"></span><div class="topright"><span class="stats" id="score"></span><button class="star" id="star" type="button" aria-label="즐겨찾기 추가" aria-pressed="false" title="즐겨찾기">★</button></div></div>
+        <div class="bar"><div class="fill" id="fill"></div></div>
+        <div class="word" id="word"></div>
+        <div class="meaning" id="meaning" aria-live="polite"></div>
+        <div class="buttons">
+          <button class="action" id="showReading" type="button">후리가나 보기</button><button class="action" id="showMeaning" type="button">한국어 뜻 보기</button>
+          <button class="action" id="wrong" type="button">✕ 다시 외우기</button><button class="action primary" id="known" type="button">✓ 외웠음</button>
+        </div>
+        <p class="hint">외웠음 → 이번 회독에서 제외 · 다시 외우기 → 이번 차례가 끝난 뒤 재출제<br>전체 단어를 외워야만 다음 회독으로 넘어갑니다.</p>
+      </div></div>
+    </div>
+    <div id="emptyArea" class="empty hidden-ui" role="status">
+      <div class="emoji">📝</div><h3>학습할 단어가 없어요</h3><p>다른 과를 선택해 주세요.</p>
+    </div>
+  </section>
+  <div style="text-align:center;margin:16px 0 0"><button id="resetProgress" type="button" style="background:transparent;border:0;color:#858b97;font-size:12px;cursor:pointer;padding:12px">현재 과목 학습 기록 초기화</button></div>
+  <p class="foot">학습 기록과 즐겨찾기는 과목별로 이 브라우저에 저장됩니다.</p>
+</main>
+<script>
+const jinwooData=[
+[1,'生かす','いかす','살리다, 활용하다'],[1,'生やす','はやす','기르다, 자라게 하다'],[1,'開ける','ひらける','열리다, 개화하다'],[1,'閉ざす','とざす','닫다, 막다'],[1,'映える','はえる','돋보이다, 빛나다'],[1,'教わる','おそわる','배우다, 가르침받다'],[1,'試みる','こころみる','시도하다'],[1,'新た','あらた','새로운, 새로움'],[1,'強いる','しいる','강요하다'],[1,'好む','このむ','좋아하다, 선호하다'],[1,'重なる','かさなる','겹치다'],[1,'外す','はずす','떼다, 풀다, 벗다'],[1,'後','のち','뒤, 나중'],[1,'冷える','ひえる','차가워지다'],[1,'冷ます','さます','식히다'],[1,'汚す','よごす','더럽히다'],[1,'汚す','けがす','더럽히다, 명예를 훼손하다'],[1,'逃がす','にがす','놓아주다, 놓치다'],[1,'逃す','のがす','놓치다'],[1,'抱く','いだく','품다, 마음에 지니다'],[1,'抱える','かかえる','안다, 떠안다'],
+[2,'危うい','あやうい','위태롭다, 위험하다'],[2,'危ぶむ','あやぶむ','걱정하다, 위태롭게 여기다'],[2,'触れる','ふれる','닿다, 접촉하다'],[2,'凍える','こごえる','추위에 얼다'],[2,'頼る','たよる','의지하다'],[2,'頼もしい','たのもしい','믿음직스럽다'],[2,'連なる','つらなる','이어지다, 줄지어 있다'],
+[3,'平たい','ひらたい','평평하다, 납작하다'],[3,'平らな','たいら','평평한'],[3,'訪れる','おとずれる','방문하다'],[3,'訪ねる','たずねる','찾아가다, 방문하다'],[3,'負かす','まかす','이기다, 패배시키다'],[3,'負う','おう','지다, 떠맡다'],[3,'老いる','おいる','늙다'],[3,'老ける','ふける','늙어 보이다'],[3,'交わる','まじわる','교류하다, 사귀다'],[3,'交える','まじえる','주고받다, 섞다'],[3,'交わす','かわす','주고받다, 교환하다'],[3,'厳しい','きびしい','엄격하다, 혹독하다'],[3,'厳かな','おごそか','엄숙한'],[3,'染みる','しみる','스며들다'],[3,'染まる','そまる','물들다'],[3,'潜る','もぐる','잠수하다'],[3,'潜む','ひそむ','숨어 있다'],[3,'焦げる','こげる','타다, 눋다'],[3,'焦る','あせる','초조해하다'],[3,'弾く','ひく','(악기를) 연주하다'],[3,'弾む','はずむ','튀다, 들뜨다'],[3,'弾','たま','탄환, 총알'],[3,'滑る','すべる','미끄러지다'],[3,'滑らかな','なめらか','매끄러운'],[3,'覆う','おおう','덮다'],[3,'覆す','くつがえす','뒤집다, 전복하다'],
+[4,'盛ん','さかん','활발함, 성함'],[4,'盛り','さかり','한창때, 절정'],[4,'盛る','もる','담다, 쌓다'],[4,'怠ける','なまける','게으름 피우다'],[4,'怠る','おこたる','게을리하다'],[4,'跳ぶ','とぶ','뛰다, 도약하다'],[4,'跳ねる','はねる','뛰어오르다'],
+[5,'辺り','あたり','주변, 근처'],[5,'怒り','いかり','분노'],[5,'周り','まわり','주위'],[5,'狩り','かり','사냥'],[5,'誇り','ほこり','자부심'],[5,'勢い','いきおい','기세'],[5,'潤い','うるおい','윤기, 촉촉함'],[5,'斜め','ななめ','비스듬함, 사선'],[5,'眺め','ながめ','전망, 경치'],[5,'細やかな','こまやか','세심한, 섬세한'],[5,'健やかな','すこやか','건강한'],[5,'速やかな','すみやか','신속한'],[5,'和やかな','なごやか','온화한'],[5,'憎い','にくい','밉다'],[5,'幼い','おさない','어리다'],[5,'快い','こころよい','기분 좋다, 유쾌하다'],[5,'貴い','とうとい','귀하다, 고귀하다'],[5,'醜い','みにくい','추하다'],[5,'渋い','しぶい','떫다, 수수하다'],[5,'生臭い','なまぐさい','비리다'],[5,'久しい','ひさしい','오래되다'],[5,'著しい','いちじるしい','현저하다'],[5,'寂しい','さびしい','외롭다, 쓸쓸하다'],[5,'激しい','はげしい','격렬하다'],[5,'怪しい','あやしい','수상하다'],[5,'卑しい','いやしい','비열하다, 천하다'],
+[6,'惜しい','おしい','아깝다'],[6,'慌ただしい','あわただしい','어수선하다, 분주하다'],[6,'甚だしい','はなはだしい','매우 심하다'],[6,'懐かしい','なつかしい','그립다'],[6,'騒がしい','さわがしい','시끄럽다, 소란스럽다'],[6,'紛らわしい','まぎらわしい','헷갈리기 쉽다'],[6,'煩わしい','わずらわしい','번거롭다, 귀찮다'],[6,'悩ましい','なやましい','고민스럽다'],[6,'勇ましい','いさましい','용맹스럽다'],[6,'華々しい','はなばなしい','화려하다']];
+// 사진 뒤의 번호는 '일차'가 아니라 같은 과의 사진 순서입니다.
+const lesson12Data=[[1,"～だけ","だけ","~뿐"],[1,"舞台","ぶたい","무대, 극"],[1,"最大","さいだい","최대"],[1,"役","やく","역, 역할"],[1,"実力","じつりょく","실력"],[1,"辞める","やめる","그만두다"],[1,"衣装","いしょう","의상"],[1,"次から次へと","つぎからつぎへと","차례차례로"],[1,"観客","かんきゃく","관객"],[1,"厳しい","きびしい","혹독하다, 엄격하다"],[1,"タップダンス","タップダンス","탭댄스"],[1,"礼儀","れいぎ","예의"],[1,"努力","どりょく","노력"],[1,"劇団","げきだん","극단"],[1,"劇場","げきじょう","극장"],[1,"特徴","とくちょう","특징"],[1,"演じる","えんじる","연기하다"],[1,"容姿","ようし","용모와 자태"],[1,"主役","しゅやく","주역"],[1,"豪華な","ごうかな","호화로운"],[1,"巨大な","きょだいな","거대한"],[1,"驚く","おどろく","놀라다"],[1,"声楽","せいがく","성악"],[1,"演劇","えんげき","연극"],[1,"マナー","マナー","매너, 예의"],[1,"感動する","かんどうする","감동하다"],[1,"歴史","れきし","역사"],[1,"ほとんど","ほとんど","대부분"],[1,"団員","だんいん","단원"],[1,"特に","とくに","특히"],[1,"スター性","スターせい","스타성"],[1,"華やかな","はなやかな","화려한"],[1,"装置","そうち","장치"],[1,"現れる","あらわれる","나타나다"],[1,"仕組み","しくみ","구조, 장치, 시스템"],[1,"バレエ","バレエ","발레"],[1,"技術","ぎじゅつ","기술"],[1,"入団する","にゅうだんする","입단하다"],[1,"作り出す","つくりだす","만들어 내다, 생산하다"],[2,"事故","じこ","사고"],[2,"手術","しゅじゅつ","수술"],[2,"生徒","せいと","학생(보통 초, 중, 고 학생)"],[2,"湿度","しつど","습도"],[2,"けがをする","けがをする","다치다, 부상을 입다"],[2,"あきらめる","あきらめる","단념하다"],[2,"賛成する","さんせいする","찬성하다"],[2,"助ける","たすける","구하다, 살리다"],[2,"意見","いけん","의견"],[2,"気温","きおん","기온"],[3,"友人","ゆうじん","친구"],[3,"荷物","にもつ","짐"],[3,"倒れる","たおれる","쓰러지다"],[3,"書類","しょるい","서류"],[3,"失敗","しっぱい","실패, 실수"],[3,"シャワーを浴びる","シャワーをあびる","샤워를 하다"],[3,"受け取る","うけとる","받다, 수취하다"],[3,"おごる","おごる","한턱내다"],[3,"届ける","とどける","보내다, 전하다"],[3,"大成功","だいせいこう","대성공"],[3,"配達","はいたつ","배달"],[3,"具合","ぐあい","형편, 상태, 몸 상태"],[3,"部下","ぶか","부하"],[3,"中途半端な","ちゅうとはんぱな","어중간한, 어정쩡한"]];
+const lesson13Data=[[1,"もともと","もともと","원래, 본래"],[1,"追い出す","おいだす","쫓아내다"],[1,"仮装","かそう","가장, 위장"],[1,"行事","ぎょうじ","행사"],[1,"イベント","イベント","이벤트"],[1,"コスプレ","コスプレ","코스프레, 분장놀이"],[1,"自然に","しぜんに","자연스럽게"],[1,"さらに","さらに","게다가"],[1,"高める","たかめる","높이다"],[1,"ＤＪポリス","ディージェーポリス","복잡한 현장에서 마이크를 들고 시민을 유도하는 경찰관의 모습이 마치 DJ 같다는 인상에서 만들어진 별명"],[1,"警察官","けいさつかん","경찰관"],[1,"状況","じょうきょう","상황"],[1,"マナー","マナー","매너, 예의"],[1,"新年","しんねん","신년"],[1,"行う","おこなう","실시하다, 행하다"],[1,"トリック・オア・トリート","トリック・オア・トリート","트릭 오어 트릿(핼러윈에 외치는 문구)"],[1,"広まる","ひろまる","넓어지다, 널리 퍼지다"],[1,"すでに","すでに","이미, 벌써"],[1,"衣装","いしょう","의상"],[1,"受け入れる","うけいれる","받아들이다"],[1,"普及","ふきゅう","보급"],[1,"反面","はんめん","반면"],[1,"誘導する","ゆうどうする","유도하다"],[1,"禁止する","きんしする","금지하다"],[1,"守る","まもる","지키다"],[1,"霊","れい","영혼, 정신, 영"],[1,"伝わる","つたわる","전해지다"],[1,"後半","こうはん","후반"],[1,"なりきる","なりきる","완전히 변모하다"],[1,"抵抗","ていこう","저항"],[1,"発展する","はってんする","발전하다"],[1,"発信する","はっしんする","전송하다, 업로드하다"],[1,"道路","どうろ","도로"],[1,"混雑する","こんざつする","혼잡하다, 붐비다"],[1,"参加する","さんかする","참가하다"],[2,"だます","だます","속이다"],[2,"肌にやさしい","はだにやさしい","피부에 순하다"],[2,"プラスチック","プラスチック","플라스틱"],[2,"大事故","だいじこ","큰 사고"],[2,"中止","ちゅうし","중지"],[2,"犯人","はんにん","범인"],[2,"合格","ごうかく","합격"],[2,"効果","こうか","효과"],[2,"熱","ねつ","열"],[2,"参加者","さんかしゃ","참가자"],[2,"事件","じけん","사건"],[2,"疑う","うたがう","의심하다"],[2,"化粧品","けしょうひん","화장품"],[2,"厳しい","きびしい","혹독하다, 엄격하다"],[2,"不注意","ふちゅうい","부주의"],[2,"ツアー","ツアー","투어, 관광 여행"],[2,"現場","げんば","현장"],[2,"危機","きき","위기"]];
+const lesson18Data=[[1,"就職活動","しゅうしょくかつどう","취직 활동"],[1,"教員","きょういん","교원, 교사"],[1,"現在","げんざい","현재"],[1,"一般的な","いっぱんてきな","일반적인"],[1,"特徴","とくちょう","특징"],[1,"シャツ","シャツ","셔츠"],[1,"批判する","ひはんする","비판하다"],[1,"効率的な","こうりつてきな","효율적인"],[1,"実際に","じっさいに","실제로"],[1,"雰囲気","ふんいき","분위기"],[1,"給料","きゅうりょう","급여"],[1,"面接","めんせつ","면접"],[1,"人生","じんせい","인생"],[1,"いわゆる","いわゆる","소위, 이른바"],[1,"推薦","すいせん","추천"],[1,"自由に","じゆうに","자유롭게"],[1,"さらに","さらに","게다가"],[1,"驚く","おどろく","놀라다"],[1,"～といえば","～といえば","~라고 하면"],[1,"合同説明会","ごうどうせつめいかい","합동 설명회"],[1,"出会う","であう","(우연히) 만나다"],[1,"体験する","たいけんする","체험하다"],[1,"適性","てきせい","적성"],[1,"エントリーシート","エントリーシート","지원서"],[1,"ようやく","ようやく","가까스로"],[1,"じっくり","じっくり","곰곰이"],[1,"独特な","どくとくな","독특한"],[1,"高度経済成長","こうどけいざいせいちょう","고도 경제 성장"],[1,"企業","きぎょう","기업"],[1,"リクルートスーツ","リクルートスーツ","취업용 정장"],[1,"学生服","がくせいふく","교복"],[1,"個性","こせい","개성"],[1,"希望する","きぼうする","희망하다"],[1,"インターンシップ","インターンシップ","인턴십"],[1,"職場","しょくば","직장"],[1,"似る","にる","닮다"],[1,"筆記試験","ひっきしけん","필기시험"],[1,"プロセス","プロセス","프로세스, 과정"],[2,"厳しい","きびしい","혹독하다, 엄격하다"],[2,"人口","じんこう","인구"],[2,"成長","せいちょう","성장"],[2,"迷う","まよう","헤매다"],[2,"たどり着く","たどりつく","(간신히) 도달하다"],[2,"乗り遅れる","のりおくれる","제시간에 타지 못하다"],[2,"反対する","はんたいする","반대하다"],[2,"増加","ぞうか","증가"],[2,"性格","せいかく","성격"],[2,"結局","けっきょく","결국"],[2,"修理","しゅうり","수리"],[2,"まんが","まんが","만화"],[2,"変化","へんか","변화"],[2,"コーヒーを入れる","コーヒーをいれる","커피를 끓이다"],[2,"目的地","もくてきち","목적지"],[2,"寝坊する","ねぼうする","늦잠 자다"]];
+const lesson19Data=[[1,"年号","ねんごう","연호"],[1,"時代","じだい","시대"],[1,"西暦","せいれき","서력"],[1,"仕組み","しくみ","구조, 장치, 시스템"],[1,"大化","たいか","다이카(일본 최초의 연호)"],[1,"梅","うめ","매화나무, 매실"],[1,"初春","しょしゅん","초봄"],[1,"なごやかな","なごやかな","온화한"],[1,"平和な","へいわな","평화로운"],[1,"込める","こめる","담다"],[1,"昭和","しょうわ","쇼와(1926~1989의 연호)"],[1,"世代","せだい","세대"],[1,"思い出","おもいで","추억"],[1,"調べる","しらべる","조사하다"],[1,"天皇","てんのう","일본 국왕(천황)"],[1,"平成","へいせい","헤이세이(1989~2019의 연호)"],[1,"役所","やくしょ","관공서"],[1,"伝わる","つたわる","전해지다"],[1,"歌集","かしゅう","가집"],[1,"様子","ようす","모습"],[1,"めでたい","めでたい","경사스럽다"],[1,"寄せ合う","よせあう","맞대다"],[1,"暮らす","くらす","지내다"],[1,"文学","ぶんがく","문학"],[1,"流行","りゅうこう","유행"],[1,"指す","さす","가리키다"],[1,"イメージ","イメージ","이미지"],[1,"歴史","れきし","역사"],[1,"即位する","そくいする","즉위하다"],[1,"令和","れいわ","레이와(2019년 5월~현재의 연호)"],[1,"手続き","てつづき","절차, 수속"],[1,"世紀","せいき","세기"],[1,"万葉集","まんようしゅう","만엽집(일본의 시가집)"],[1,"ほめる","ほめる","칭찬하다"],[1,"やわらぐ","やわらぐ","누그러지다"],[1,"穏やかな","おだやかな","온화한"],[1,"願い","ねがい","바람, 소원"],[1,"登場する","とうじょうする","등장하다"],[1,"スタイル","スタイル","스타일"],[1,"表す","あらわす","나타내다"],[1,"結びつく","むすびつく","이어지다"],[1,"理解する","りかいする","이해하다"],[2,"手術を受ける","しゅじゅつをうける","수술을 받다"],[2,"天気予報","てんきよほう","일기예보"],[2,"施設","しせつ","시설"],[2,"部員","ぶいん","부원"],[2,"思いつく","おもいつく","생각이 떠오르다"],[2,"すっかり","すっかり","완전히, 아주"],[2,"アンケート","アンケート","앙케트"],[2,"平日","へいじつ","평일"],[2,"得意な","とくいな","잘하는, 능숙한"],[2,"挙げる","あげる","거론하다, 들다"],[2,"転校生","てんこうせい","전학생"],[2,"増税","ぞうぜい","증세"],[2,"元","もと","전(직), 본래"],[2,"不景気","ふけいき","불경기"],[2,"合格する","ごうかくする","합격하다"]];
+
+const courses={
+ jinwoo:{title:'3주차 1~3일차 (진우꺼)',subtitle:'기존 한자 암기장 · 전체 단어',data:jinwooData,favoritesKey:'kanjiFavorites'},
+ student12:{title:'12과 다카라즈카',subtitle:'12과 전체 단어',data:lesson12Data,favoritesKey:'kanjiFavorites_stu12'},
+ student13:{title:'13과 할로윈',subtitle:'13과 전체 단어',data:lesson13Data,favoritesKey:'kanjiFavorites_stu13'},
+ student18:{title:'18과 취직활동',subtitle:'18과 전체 단어',data:lesson18Data,favoritesKey:'kanjiFavorites_stu18'},
+ student19:{title:'19과 연호',subtitle:'19과 전체 단어',data:lesson19Data,favoritesKey:'kanjiFavorites_stu19'}
+};
+const $=id=>document.getElementById(id);
+const storageGet=(k)=>{try{return localStorage.getItem(k)}catch{return null}};
+const storageSet=(k,v)=>{try{localStorage.setItem(k,v)}catch{}};
+const storageRemove=k=>{try{localStorage.removeItem(k)}catch{}};
+const readStore=k=>{try{return JSON.parse(storageGet(k)||'null')}catch{return null}};
+const saveStore=(k,v)=>storageSet(k,JSON.stringify(v));
+const key=d=>d[1]+'|'+d[2];
+const shuffle=a=>{for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+
+// 이 버전은 기존 오류가 있던 암기/회독 기록을 가져오지 않습니다.
+// 최초 실행 시 이전 버전의 학습 기록만 삭제합니다. 즐겨찾기는 유지합니다.
+if(storageGet('kanjiCycleV5Cleaned')!=='yes'){
+ for(const k of ['kanjiMarks','kanjiMarks_stu12','kanjiMarks_stu13','kanjiMarks_stu18','kanjiMarks_stu19',
+  'kanjiRoundState_v2_jinwoo','kanjiRoundState_v2_student12','kanjiRoundState_v2_student13',
+  'kanjiRoundState_v2_student18','kanjiRoundState_v2_student19'])storageRemove(k);
+ storageSet('kanjiCycleV5Cleaned','yes');
+}
+const progressKey=id=>'kanjiCycleV5_'+id;
+const initialState=(id,round=1)=>{
+ const ids=courses[id].data.map((_,i)=>i);
+ if(storageGet('kanjiOrderMode')==='random')shuffle(ids);
+ return {round,pass:1,passTotal:ids.length,queue:ids,failed:[],mastered:[],completed:ids.length===0,awaitingRetry:false};
+};
+function validState(s,id){
+ if(!s||!Number.isInteger(s.round)||s.round<1||!Number.isInteger(s.pass)||s.pass<1||
+ !Array.isArray(s.queue)||!Array.isArray(s.failed)||!Array.isArray(s.mastered)||
+ !Number.isInteger(s.passTotal)||s.passTotal<0||typeof s.completed!=='boolean')return false;
+ const size=courses[id].data.length;
+ const all=[...s.queue,...s.failed,...s.mastered];
+ return all.length===size && new Set(all).size===size && all.every(x=>Number.isInteger(x)&&x>=0&&x<size);
+}
+let active=storageGet('kanjiSelectedCourse');
+if(!Object.prototype.hasOwnProperty.call(courses,active))active='jinwoo';
+let state, favorites={}, selectedId=null;
+function saveState(){saveStore(progressKey(active),state)}
+function selectCourse(id){
+ if(!Object.prototype.hasOwnProperty.call(courses,id))return;
+ active=id;
+ storageSet('kanjiSelectedCourse',id);
+ const c=courses[id];
+ favorites=readStore(c.favoritesKey)||{};
+ let saved=readStore(progressKey(id));
+ state=validState(saved,id)?saved:initialState(id);
+ if(typeof state.awaitingRetry!=='boolean')state.awaitingRetry=state.queue.length===0&&state.failed.length>0;
+ saveState();
+ $('selectedTitle').textContent=c.title;
+ $('selectedSubtitle').textContent=c.subtitle;
+ $('coursePicker').value=id;
+ $('mode').value='all';
+ $('studyArea').classList.toggle('hidden-ui',!c.data.length);
+ $('emptyArea').classList.toggle('hidden-ui',!!c.data.length);
+ render();
+}
+function visibleId(){
+ const mode=$('mode').value;
+ const q=state.queue;
+ if(mode==='favorite')return q.find(i=>favorites[key(courses[active].data[i])]);
+ if(mode==='wrong')return q.find(i=>state.pass>1 || (state.wrongEver||[]).includes(i));
+ return q[0];
+}
+function render(){
+ const c=courses[active],total=c.data.length;
+ const done=state.completed, waiting=!!state.awaitingRetry;
+ $('roundDone').hidden=!done;
+ $('retryPrompt').hidden=!waiting;
+ $('studyContent').hidden=done||waiting;
+ $('roundInfo').textContent=`${state.round}회독`;
+ if(done){
+   $('roundDoneTitle').textContent=`${state.round}회독 끝! 🎉`;
+   $('roundDoneText').textContent=`${total}개 단어를 모두 외웠어요.`;
+   $('startNext').textContent=`${state.round+1}회독 시작`;
+   return;
+ }
+ if(waiting){
+   $('retryCount').textContent=state.failed.length;
+   return;
+ }
+ selectedId=visibleId();
+ const d=selectedId===undefined?null:c.data[selectedId];
+ $('word').replaceChildren();$('meaning').textContent='';
+ $('showReading').textContent='후리가나 보기';$('showMeaning').textContent='한국어 뜻 보기';
+ if(d){
+   const r=document.createElement('div');r.className='reading-line hidden';r.textContent=d[2];
+   const w=document.createElement('div');w.className='kanji-line';
+   if(d[1].length>=15)w.classList.add('xlong');else if(d[1].length>=9)w.classList.add('long');
+   w.textContent=d[1];$('word').append(r,w);
+ }else{
+   const msg=document.createElement('div');msg.style.cssText='font-size:17px;color:#81899a;line-height:1.6';
+   msg.textContent=$('mode').value==='favorite'?'현재 차례에 남은 즐겨찾기 단어가 없어요. 전체 단어를 선택해 주세요.':
+     $('mode').value==='wrong'?'현재 차례에 다시 볼 단어가 없어요. 전체 단어를 선택해 주세요.':'이번 차례의 단어가 없어요.';
+   $('word').append(msg);
+ }
+ const on=!!(d&&favorites[key(d)]);
+ $('star').classList.toggle('active',on);
+ $('star').setAttribute('aria-pressed',String(on));
+ $('star').setAttribute('aria-label',on?'즐겨찾기 해제':'즐겨찾기 추가');
+ $('count').textContent=`${state.passTotal-state.queue.length+1} / ${state.passTotal}`;
+ $('score').textContent=`외운 단어 ${state.mastered.length}/${total}`;
+ $('fill').style.width=`${total?state.mastered.length/total*100:0}%`;
+ for(const name of ['showReading','showMeaning','wrong','known','star'])$(name).disabled=!d;
+}
+function mark(status){
+ const id=visibleId();if(id===undefined || state.completed || state.awaitingRetry)return;
+ // 필터로 중간 단어를 선택해도 다른 단어의 순서는 보존됩니다.
+ const pos=state.queue.indexOf(id);if(pos<0)return;
+ state.queue.splice(pos,1);
+ if(status==='known')state.mastered.push(id);
+ else {
+  state.failed.push(id);
+  if(!Array.isArray(state.wrongEver))state.wrongEver=[];
+  if(!state.wrongEver.includes(id))state.wrongEver.push(id);
+ }
+ // 핵심: 이번 차례를 끝낸 후에만 '다시 외우기' 단어들을 다음 차례로 보냅니다.
+ if(state.queue.length===0){
+   if(state.failed.length){
+     state.awaitingRetry=true;
+   }else if(state.mastered.length===courses[active].data.length){
+     state.completed=true;
+   }
+ }
+ saveState();render();
+}
+$('beginRetry').onclick=()=>{
+ if(!state.awaitingRetry||!state.failed.length)return;
+ state.queue=[...state.failed];state.failed=[];state.pass++;
+ state.passTotal=state.queue.length;state.awaitingRetry=false;
+ if($('orderMode').value==='random')shuffle(state.queue);
+ $('mode').value='all';saveState();render();
+};
+$('known').onclick=()=>mark('known');
+$('wrong').onclick=()=>mark('wrong');
+$('startNext').onclick=()=>{
+ if(!state.completed)return;
+ state=initialState(active,state.round+1);
+ saveState();$('mode').value='all';render();
+};
+$('showReading').onclick=()=>{
+ const r=$('word').querySelector('.reading-line');if(!r)return;
+ r.classList.toggle('hidden');
+ $('showReading').textContent=r.classList.contains('hidden')?'후리가나 보기':'후리가나 숨기기';
+};
+$('showMeaning').onclick=()=>{
+ const id=visibleId();if(id===undefined)return;
+ const showing=!!$('meaning').textContent;
+ $('meaning').textContent=showing?'':courses[active].data[id][3];
+ $('showMeaning').textContent=showing?'한국어 뜻 보기':'한국어 뜻 숨기기';
+};
+$('star').onclick=()=>{
+ const id=visibleId();if(id===undefined)return;
+ const k=key(courses[active].data[id]);
+ if(favorites[k])delete favorites[k];else favorites[k]=true;
+ saveStore(courses[active].favoritesKey,favorites);
+ render();
+};
+$('mode').onchange=render;
+$('orderMode').onchange=()=>{
+ const mode=$('orderMode').value;
+ storageSet('kanjiOrderMode',mode);
+ if(mode==='random')shuffle(state.queue);else state.queue.sort((a,b)=>a-b);
+ saveState();render();
+};
+$('coursePicker').onchange=()=>selectCourse($('coursePicker').value);
+$('resetProgress').onclick=()=>{
+ if(!confirm(`「${courses[active].title}」의 현재 회독 기록을 모두 지우고 1회독부터 다시 시작할까요?`))return;
+ state=initialState(active);saveState();$('mode').value='all';render();
+};
+$('orderMode').value=storageGet('kanjiOrderMode')==='random'?'random':'ordered';
+selectCourse(active);
+</script></body></html>
