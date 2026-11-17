@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#f5f7fc">
-<title>칸지외우자 · JLPT N1·N2 통합 암기장</title>
+<title>칸지외우자 · JLPT N1·N2 · 강독 해석 학습</title>
 <style>
 :root{font-family:system-ui,-apple-system,"Noto Sans KR","Apple SD Gothic Neo","Yu Gothic","Noto Sans JP",sans-serif;color-scheme:light;--bg:#f5f7fc;--paper:#fff;--text:#1c2943;--muted:#748097;--line:#e0e6ef;--blue:#315aa0;--strong:#263e70}
 *{box-sizing:border-box}html,body{margin:0;min-height:100%;}body{background:var(--bg);color:var(--text);-webkit-text-size-adjust:100%}
@@ -25,11 +25,25 @@ button,select,input{font:inherit;color:inherit}button{cursor:pointer}button:disa
 .footer{padding:11px 4px 0;text-align:center;color:#8c98aa;font-size:11px;line-height:1.65}.footer details{margin-top:3px}.footer summary{cursor:pointer;display:inline-block;color:#8191ab;text-decoration:underline;text-underline-offset:2px}.footer a{color:#5270a7}
 @media(max-width:500px){.page{padding:11px 10px 24px}.brand{margin-bottom:10px}.brand h1{font-size:20px}.brand-symbol{width:32px;height:32px;border-radius:10px;font-size:19px}.brand-right{font-size:10px;padding:6px}.toolbar{padding:10px;border-radius:14px}.select-row{grid-template-columns:minmax(0,1.13fr) minmax(0,1fr);gap:7px}.picker{font-size:12px;padding:6px 6px;min-height:39px}.daybar button{min-width:26px;padding:0 4px;font-size:17px}.daybar{gap:3px}.meta-row{margin-top:7px}.tabbar{margin:8px 0 8px}.tabbar button{min-height:37px;font-size:12px}.content{padding:12px;border-radius:15px}.wordspace{min-height:157px;gap:9px}.headword{font-size:clamp(34px,10vw,48px)}.headword.long{font-size:clamp(25px,7vw,36px)}.headword.verylong{font-size:clamp(21px,5.5vw,31px)}.reading{font-size:19px}.meaning{font-size:18px}.actions{gap:7px}.action{font-size:12px;min-height:42px}.card-footline{margin-top:11px}.choices{gap:6px}.choice{min-height:57px;padding:10px 8px;font-size:12px}.qprompt{font-size:19px}.list-row{grid-template-columns:21px minmax(0,1.1fr) minmax(0,1fr);padding:9px 7px;gap:5px}.list-word{font-size:13px}.list-reading{font-size:11px}.list-meaning{font-size:11px}.tiny-pill{font-size:10px}}
 @media(prefers-reduced-motion:reduce){.fill{transition:none}}
+
+/* 강독 학습: 한 화면에 연습 카드 하나, 긴 문단은 내부 스크롤. */
+.tabbar{grid-template-columns:repeat(4,minmax(0,1fr))}.tabbar button{font-size:12px;padding:6px 2px}
+.reading-section{padding:15px}.read-heading{display:flex;justify-content:space-between;align-items:center;gap:8px}.read-heading h2{margin:0;font-size:17px;letter-spacing:-.3px}.read-heading p{margin:4px 0 0;color:#8090a9;font-size:11px}.read-smalltag{font-size:10px;background:#eef3fb;color:#3d5b90;border-radius:20px;white-space:nowrap;padding:6px 9px;font-weight:800}
+.read-pickers{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:14px 0 11px}.read-pickers label,.read-write-label{display:block;font-size:11px;color:#697b98;font-weight:750;margin:0 0 6px}.read-select{width:100%;min-width:0;padding:10px 7px;border-radius:10px;border:1px solid #d7e0ec;background:#fbfcff;font-size:12px;font-weight:700}
+.read-progress{display:flex;justify-content:space-between;align-items:center;gap:6px;color:#5b708f;font-size:11px;font-weight:730}.read-track{height:5px;background:#edf1f8;border-radius:99px;margin:7px 0 12px;overflow:hidden}.read-track span{display:block;height:100%;width:0;background:#3c65a7;border-radius:inherit;transition:width .2s}
+.read-topic{display:flex;align-items:center;justify-content:space-between;gap:6px;color:#58709b;font-size:11px;font-weight:800;margin-bottom:8px}.read-topic span:last-child{white-space:nowrap;color:#7e8aa0;font-weight:650}
+.read-prompt{font-family:"Noto Sans JP","Yu Gothic",system-ui,sans-serif;font-size:clamp(15px,3.8vw,17px);line-height:1.85;white-space:pre-wrap;overflow:auto;overscroll-behavior:contain;max-height:285px;border:1px solid #e1e8f2;border-radius:12px;background:#f8faff;padding:14px 13px;color:#1f3355;word-break:keep-all}
+.reading-section[data-unit="paragraph"] .read-prompt{max-height:260px}.reading-section[data-direction="ko-ja"] .read-prompt{font-family:inherit}
+#readHint{margin:9px 0 11px;border:1px solid #e5ebf4;border-radius:10px;background:#fff;font-size:11px;color:#63799c;padding:9px 11px}#readHint summary{font-weight:750;cursor:pointer}.read-hinttext{margin-top:8px;line-height:1.7;color:#435a7c}
+.read-input{display:block;width:100%;resize:vertical;min-height:104px;max-height:190px;padding:12px;border-radius:11px;border:1px solid #cbd7e7;background:#fff;outline-offset:2px;line-height:1.7;font:inherit;font-size:14px}.read-input:focus{border-color:#5d7fc6;outline:2px solid #b8c9f0}.read-check{border:0;border-radius:11px;margin-top:10px;padding:12px;background:#355b96;color:#fff;font-size:13px;font-weight:800;width:100%}.read-error{font-size:11px;color:#ad5462;margin:6px 2px}
+.read-solution{margin-top:13px;border-top:1px solid #e2e8f1;padding-top:12px}.read-solution h3{font-size:13px;margin:0 0 10px}.read-dual{display:grid;gap:8px}.read-dual>div{padding:10px 11px;border-radius:10px;background:#f5f7fb;max-height:180px;overflow:auto}.read-dual>div:last-child{background:#eef5ff}.read-dual span{font-size:10px;color:#72839c;font-weight:800}.read-dual p{margin:6px 0 0;white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.75;font-size:13px}.read-guide{font-size:11px;color:#667d9b;line-height:1.55;margin:10px 2px 0}.read-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.read-bottom{display:flex;gap:10px;align-items:flex-start;justify-content:space-between;margin-top:14px;font-size:10px;color:#8492a6}.read-bottom details{text-align:right}.read-bottom summary{color:#647b9f;font-size:11px;cursor:pointer;font-weight:750}.read-bottom details[open]{padding:9px;background:#f6f8fc;border-radius:9px}.read-checklabel{display:block;margin-top:12px}.read-reset{border:0;color:#a35267;text-decoration:underline;background:none;padding:8px 0;font-size:11px}.read-bottom p{font-size:10px;margin:0}.read-source-info{border-top:1px solid #edf1f7;padding-top:9px;margin:14px 0 0;color:#91a0b5;font-size:10px;line-height:1.6}.read-next-paragraph{background:#eff4ff!important;color:#355b96!important;border:1px solid #d5e0f3!important;margin-top:8px!important}
+@media(max-width:450px){.tabbar button{font-size:11px}.read-pickers{gap:6px}.read-select{font-size:11px}.reading-section{padding:13px}.read-prompt{max-height:250px;padding:12px}.read-hinttext{font-size:11px}}
+
 </style>
 </head>
 <body>
 <main class="page">
-<header class="brand"><div class="brand-left"><div class="brand-symbol" aria-hidden="true">字</div><div><h1>칸지외우자</h1><p>진우씨가 만듦 · 시험에 써먹는 어휘 학습</p></div></div><span class="brand-right">N1 · N2 실전</span></header>
+<header class="brand"><div class="brand-left"><div class="brand-symbol" aria-hidden="true">字</div><div><h1>칸지외우자</h1><p>진우씨가 만듦 · 시험에 써먹는 어휘 학습</p></div></div><span class="brand-right">어휘 · 강독</span></header>
 <section class="toolbar" aria-label="학습 과정 설정">
   <div class="select-row">
     <div class="field"><label for="coursePicker">학습 영역</label><select id="coursePicker" class="picker">
@@ -59,6 +73,7 @@ button,select,input{font:inherit;color:inherit}button{cursor:pointer}button:disa
  <button type="button" data-tab="study" class="current">암기 카드</button>
  <button type="button" data-tab="quiz">JLPT 문제풀이</button>
  <button type="button" data-tab="catalog">단어 목록</button>
+ <button type="button" data-tab="reading">강독 해석</button>
 </nav>
 <section id="studySection" class="content" aria-label="단어 암기 카드">
  <div id="studyTop" class="cardtop"><span class="stats" id="roundInfo"></span><div class="rightstat"><span class="stats" id="score"></span><button type="button" id="star" class="star" aria-label="즐겨찾기 추가" aria-pressed="false" title="즐겨찾기">★</button></div></div>
@@ -81,6 +96,34 @@ button,select,input{font:inherit;color:inherit}button{cursor:pointer}button:disa
 <section id="catalogSection" class="content is-hidden" aria-label="학습 단어 목록">
  <div class="catalog-top"><h2>누적 단어 목록</h2><span id="catalogCount">30개</span></div>
  <input type="search" id="catalogSearch" class="catalog-search" placeholder="한자 · 히라가나 · 뜻 검색" autocomplete="off" aria-label="단어 검색"><div class="list-scroll" id="catalogItems"></div>
+</section>
+<section id="readingSection" class="content reading-section is-hidden" aria-label="강독 문장 해석 훈련">
+  <div class="read-heading"><div><h2>강독 · 다카라즈카 본문</h2><p>교재 98쪽 · 실제 5개 문단 / 19개 문장</p></div><span class="read-smalltag">직접 쓰기</span></div>
+  <div class="read-pickers">
+    <div><label for="readUnit">연습 단위</label><select id="readUnit" class="read-select"><option value="sentence">① 문장별 연습 · 19문제</option><option value="paragraph">② 문단별 연습 · 5문제</option></select></div>
+    <div><label for="readDirection">해석 방향</label><select id="readDirection" class="read-select"><option value="ja-ko">일본어 → 한국어</option><option value="ko-ja">한국어 → 일본어</option></select></div>
+  </div>
+  <div class="read-progress"><span id="readCycle">1회독 · 1차 학습</span><span id="readCount">0 / 19 외웠음</span></div>
+  <div class="read-track"><span id="readFill"></span></div>
+  <div id="readRetry" class="intermission is-hidden"><div class="big">📖</div><h2>다시 외울 문장을 연습해 봐요!</h2><p>다시 볼 문제가 <strong id="readRetryCount">0</strong>개 있어요.</p><button type="button" id="readRetryBtn">다시 외우기</button></div>
+  <div id="readDone" class="intermission is-hidden"><div class="big">🎉</div><h2 id="readDoneTitle">회독 완료!</h2><p>모든 문제를 외웠어요. 다음 회독으로 반복할 수 있어요.</p><button type="button" id="readNextBtn">다음 회독 시작</button><button type="button" id="readParagraphNext" class="read-next-paragraph is-hidden">문단별 연습으로 이어가기 →</button></div>
+  <div id="readPractice">
+    <div class="read-topic"><span id="readLocator">제1문단 · 1번째 문장</span><span id="readDirectionLabel">일본어 → 한국어</span></div>
+    <div id="readPrompt" class="read-prompt" lang="ja"></div>
+    <details id="readHint"><summary>표현 힌트 보기 (선택)</summary><div id="readHintText" class="read-hinttext"></div></details>
+    <label for="readInput" id="readWriteLabel" class="read-write-label">한국어로 직접 해석하세요</label>
+    <textarea id="readInput" class="read-input" rows="4" spellcheck="false" placeholder="해석을 직접 입력해 보세요."></textarea>
+    <button type="button" class="read-check" id="readReveal">모범답안 확인</button>
+    <p class="read-error is-hidden" id="readError" role="status">먼저 직접 답안을 적어 주세요.</p>
+    <div id="readSolution" class="read-solution is-hidden">
+      <h3>내 답안과 모범답안 비교</h3>
+      <div class="read-dual"><div><span>내가 쓴 답</span><p id="readOwn"></p></div><div><span>모범답안</span><p id="readModel"></p></div></div>
+      <p class="read-guide">해석은 표현이 달라도 의미가 맞으면 정답으로 판단해요. 특히 한국어→일본어는 조사·어미·한자 표기를 비교해 보세요.</p>
+      <div class="read-actions"><button type="button" id="readWrong" class="action bad">✕ 다시 외우기</button><button type="button" id="readKnown" class="action good">✓ 외웠음</button></div>
+    </div>
+  </div>
+  <div class="read-bottom"><span>문장 학습 → 문단 학습 추천</span><details><summary>⚙ 강독 학습 설정</summary><label class="read-checklabel"><input type="checkbox" id="readShuffle">문제 순서 섞기</label><button id="readReset" class="read-reset" type="button">이 방향·단위 회독 초기화</button><p>각 연습 단위와 방향별 회독 기록은 따로 저장돼요.</p></details></div>
+  <p class="read-source-info">※ 사용자 제공 교재 98쪽 첫 번째 사진만 사용했습니다. 학습용 문단 제목·한국어 모범답안·문법 힌트는 자체 작성입니다. 공개 웹사이트에 교재 원문을 게시할 때는 저작권 이용 조건을 확인해 주세요.</p>
 </section>
 <footer class="footer">학습 기록은 이 브라우저에만 저장됩니다. N1/N2·일차별 기록은 독립적입니다.<details><summary>자료 출처와 주의사항</summary><p>N1은 기존 자체 선별 어휘 600개를, N2는 제공된 『JLPT 한끝 N2』 단어연습장을 참고하여 학습 목적에 맞게 선별·재배치했습니다. 일본어 표기와 읽기·자체 정리한 뜻을 사용했습니다. 출판사 교재의 수록 여부는 JLPT 공식 기출 확인과 다르며, N1/N2의 공식 전체 어휘 목록은 공개되어 있지 않습니다. 사용자 제공 교재에 기반한 자료를 공개 배포할 때에는 교재의 이용·저작권 조건을 확인하세요. 분류 필터는 학습 편의를 위한 자체 태그이며, 유사어는 뜻과 용법을 비교해 볼 만한 묶음을 뜻합니다. 의태어와 의성어를 혼동하지 않도록 선정했고, 일부 어휘는 분류에서 빠질 수 있습니다.</p><a href="https://www.jlpt.jp/e/guideline/testsections.html" target="_blank" rel="noopener">JLPT 공식 문제 구성</a></details></footer>
 </main>
@@ -196,7 +239,7 @@ function store(){save(currentProgressKey(),state)}
 function populateDays(){const sel=$('dayPicker');sel.replaceChildren();if(!isJLPT(active))return;for(let i=1;i<=20;i++){const opt=document.createElement('option');opt.value=String(i);opt.textContent=`${i}일차 · ${i*30}개`;sel.appendChild(opt)}sel.value=String(currentDay());$('dayPrev').disabled=currentDay()===1;$('dayNext').disabled=currentDay()===20}
 function setCourse(id,keepTab=false){if(!(id in courseDefs))return;const oldTab=tab;active=id;set('kanjiSelectedCourse',id);activeData=getSelectedData();category=get('kanjiCategory_'+id)||'all';favorites=load(courseDefs[id].fav)||{};const saved=load(currentProgressKey());state=validState(saved)?saved:mkState();if(!Array.isArray(state.wrongEver))state.wrongEver=[];if(typeof state.awaitingRetry!=='boolean')state.awaitingRetry=!state.queue.length&&state.failed.length>0;store();$('coursePicker').value=id;$('dayControl').classList.toggle('is-hidden',!isJLPT(id));document.querySelector('.select-row').classList.toggle('only-course',!isJLPT(id));$('quizType').value='reading';$('mode').value='all';tab='study';populateDays();$('courseMeta').textContent=isJLPT(id)?`신규 30개 · 누적 ${activeData.length}개 · 20일 과정`:`${activeData.length}개 단어 · 개인별 회독 저장`;
  const qBtn=document.querySelector('[data-tab="quiz"]');qBtn.classList.toggle('hidden',!isJLPT(id));showTab(keepTab?oldTab:'study');document.querySelectorAll('[data-category]').forEach(b=>{const yes=b.dataset.category===category;b.classList.toggle('selected',yes);b.setAttribute('aria-pressed',String(yes))});updateCategorySummary();render()}
-function showTab(which){if(which==='quiz'&&!isJLPT(active))which='study';tab=which;for(const b of document.querySelectorAll('[data-tab]'))b.classList.toggle('current',b.dataset.tab===which);$('studySection').classList.toggle('is-hidden',which!=='study');$('quizSection').classList.toggle('is-hidden',which!=='quiz');$('catalogSection').classList.toggle('is-hidden',which!=='catalog');if(which==='quiz')loadQuiz();if(which==='catalog')renderCatalog()}
+function showTab(which){if(which==='quiz'&&!isJLPT(active))which='study';tab=which;for(const b of document.querySelectorAll('[data-tab]'))b.classList.toggle('current',b.dataset.tab===which);$('studySection').classList.toggle('is-hidden',which!=='study');$('quizSection').classList.toggle('is-hidden',which!=='quiz');$('catalogSection').classList.toggle('is-hidden',which!=='catalog');$('readingSection').classList.toggle('is-hidden',which!=='reading');document.querySelector('.toolbar').classList.toggle('is-hidden',which==='reading');if(which==='quiz')loadQuiz();if(which==='catalog')renderCatalog();if(which==='reading')renderReading()}
 function shownId(){const q=state.queue,mode=$('mode').value;const available=q.filter(i=>categoryMatch(activeData[i],category));if(mode==='favorite')return available.find(i=>favorites[wordKey(activeData[i])]);if(mode==='wrong')return available.find(i=>state.pass>1||state.wrongEver.includes(i));return available[0]}
 function pill(txt,extra=''){const s=document.createElement('span');s.className='tiny-pill '+extra;s.textContent=txt;return s}
 function render(){if(!state)return;const done=state.completed,waiting=!!state.awaitingRetry; $('retryPrompt').classList.toggle('is-hidden',!waiting);$('roundDone').classList.toggle('is-hidden',!done);$('studyContent').classList.toggle('is-hidden',done||waiting);$('progressBar').classList.toggle('is-hidden',done||waiting);$('studyTop').classList.toggle('is-hidden',done||waiting);
@@ -243,6 +286,70 @@ $('tipToggle').onclick=()=>{const closed=$('tipBox').classList.contains('is-hidd
 $('quizType').onchange=()=>{lastQuizKey='';newQuestion()};$('nextQuestion').onclick=newQuestion;$('catalogSearch').oninput=renderCatalog;
 $('orderMode').value=get('kanjiOrderMode')==='random'?'random':'ordered';
 setCourse(active);
+
+
+const READING_PARAGRAPHS=[{"title":"극단 소개","items":[{"jp":"日本には、「宝塚歌劇団」という女性だけの劇団があります。","ko":"일본에는 ‘다카라즈카 가극단’이라는 여성만으로 이루어진 극단이 있습니다.","tip":"「～という」는 ‘~라는’이라는 이름·내용을 설명하고, 「だけ」는 ‘~만’을 뜻해요."},{"jp":"「宝塚」や「ヅカ」とも呼ばれています。","ko":"‘다카라즈카’나 ‘즈카’라고도 불립니다.","tip":"「～とも呼ばれています」는 ‘~라고도 불립니다’라는 수동 표현이에요."},{"jp":"1913年に兵庫県宝塚市で作られてから100年以上続く、歴史がある劇団です。","ko":"1913년에 효고현 다카라즈카시에서 만들어진 뒤 100년 이상 이어져 온 역사가 있는 극단입니다.","tip":"「～てから」는 ‘~한 뒤부터’, 「100年以上続く」는 ‘100년 이상 이어지는’이라는 뜻이에요."},{"jp":"宝塚の舞台を見るためには、兵庫県の宝塚大劇場まで行くしかないと思うかもしれません。","ko":"다카라즈카의 공연을 보기 위해서는 효고현의 다카라즈카 대극장까지 갈 수밖에 없다고 생각할지도 모릅니다.","tip":"「～ためには」 목적, 「～しかない」 ‘~할 수밖에 없다’, 「～かもしれません」 추측."},{"jp":"しかし、東京都にも東京宝塚劇場があり、ほとんどの作品はどちらの劇場でも見られます。","ko":"그러나 도쿄도에도 도쿄 다카라즈카 극장이 있어 대부분의 작품은 어느 쪽 극장에서든 볼 수 있습니다.","tip":"「どちらの～でも」는 ‘어느 쪽 ~에서든’, 「見られます」는 가능 표현이에요."}]},{"title":"여성 단원과 톱스타","items":[{"jp":"宝塚の最大の特徴は、団員がすべて女性だということです。","ko":"다카라즈카의 가장 큰 특징은 단원이 모두 여성이라는 점입니다.","tip":"「～ということ」는 앞의 내용을 명사화해 ‘~라는 것’으로 표현해요."},{"jp":"男性の役を演じる人は「男役」、女性の役を演じる人は「娘役」と呼ばれます。","ko":"남성 역할을 연기하는 사람은 ‘오토코야쿠(남역)’, 여성 역할을 연기하는 사람은 ‘무스메야쿠(여역)’라고 불립니다.","tip":"「役を演じる」는 ‘역할을 연기하다’, 「～と呼ばれる」는 ‘~라고 불리다’예요."},{"jp":"宝塚には、花組、月組、雪組、星組、宙組という五つの組があります。","ko":"다카라즈카에는 하나구미(꽃조), 쓰키구미(달조), 유키구미(눈조), 호시구미(별조), 소라구미(하늘조)라는 다섯 개의 조가 있습니다.","tip":"「～という五つの組」는 ‘~라는 다섯 개의 조’라는 뜻이에요."},{"jp":"各組に団員は約80名いますが、特に有名なのが、各組に一人ずついるトップスターです。","ko":"각 조에는 단원이 약 80명씩 있지만, 특히 유명한 것은 각 조에 한 명씩 있는 톱스타입니다.","tip":"「約80名」는 ‘약 80명’, 「一人ずつ」는 ‘한 명씩’이에요."},{"jp":"人気ばかりでなく、実力、容姿、スター性などを持った男役がトップスターに選ばれます。","ko":"인기뿐만 아니라 실력, 용모, 스타성 등을 갖춘 남역 배우가 톱스타로 선택됩니다.","tip":"「～ばかりでなく」는 ‘~뿐만 아니라’, 「～に選ばれる」는 ‘~로 선택되다’예요."},{"jp":"トップスターは劇団を辞めるまで、その組の舞台の主役を演じ続けるのです。","ko":"톱스타는 극단을 그만둘 때까지 그 조의 무대에서 주역을 계속 연기하는 것입니다.","tip":"「～まで」는 ‘~할 때까지’, 「～続ける」는 동작의 지속을 나타내요."}]},{"title":"무대 연출","items":[{"jp":"宝塚の舞台は、歌やダンスばかりでなく、華やかな衣装や豪華な舞台装置も有名です。","ko":"다카라즈카의 무대는 노래와 춤뿐만 아니라 화려한 의상과 호화로운 무대 장치로도 유명합니다.","tip":"「～ばかりでなく、～も」는 ‘~뿐 아니라 ~도’라는 추가 표현이에요."},{"jp":"舞台の最中に、次から次へと衣装が変わったり、巨大な階段が現れたりと、観客が驚くような仕組みもあります。","ko":"공연 도중에 의상이 잇달아 바뀌거나 거대한 계단이 나타나는 등 관객이 놀랄 만한 장치도 있습니다.","tip":"「次から次へと」는 ‘잇달아’, 「～たり～たり」는 여러 동작의 예시, 「～ような」는 ‘~와 같은’이에요."},{"jp":"どこを見ても夢のような世界です。","ko":"어디를 보아도 꿈과 같은 세계입니다.","tip":"「どこを見ても」는 ‘어디를 보아도’라는 뜻이에요."}]},{"title":"연습과 노력","items":[{"jp":"しかし、舞台が華やかに見えるかわりに、団員たちは厳しい練習をしています。","ko":"그러나 무대가 화려해 보이는 반면 단원들은 혹독한 연습을 하고 있습니다.","tip":"「～かわりに」는 문맥에 따라 ‘~하는 대신에/~하는 반면’이라는 대조를 나타내요."},{"jp":"宝塚の団員になるには、宝塚音楽学校で2年間の教育を受けなくてはなりません。","ko":"다카라즈카의 단원이 되려면 다카라즈카 음악학교에서 2년 동안 교육을 받아야 합니다.","tip":"「～になるには」는 ‘~이 되려면’, 「～なくてはなりません」은 의무를 나타내요."},{"jp":"声楽、バレエ、タップダンス、演劇などの技術ばかりでなく、礼儀やマナーも厳しく教えられます。","ko":"성악, 발레, 탭댄스, 연극 등의 기술뿐 아니라 예의와 매너도 엄격하게 가르침을 받습니다.","tip":"「～ばかりでなく」는 ‘~뿐 아니라’, 「教えられます」는 ‘가르침을 받다’라는 수동 표현이에요."},{"jp":"音楽学校を卒業して入団したあとも、こうした練習と努力を続けることで、観客を感動させる舞台を作り出しているのです。","ko":"음악학교를 졸업하고 극단에 입단한 뒤에도 이러한 연습과 노력을 계속함으로써 관객에게 감동을 주는 무대를 만들어 내고 있는 것입니다.","tip":"「～たあとも」는 ‘~한 뒤에도’, 「～ことで」는 수단·원인, 「感動させる」는 사역, 「作り出す」는 ‘만들어 내다’예요."}]},{"title":"마무리","items":[{"jp":"このように、宝塚は、日本を代表する舞台文化の一つと言えるでしょう。","ko":"이처럼 다카라즈카는 일본을 대표하는 무대 문화 가운데 하나라고 할 수 있을 것입니다.","tip":"「このように」는 ‘이처럼’, 「～の一つ」는 ‘~중 하나’, 「～と言えるでしょう」는 완곡한 판단이에요."}]}];
+const READING_SENTENCES=READING_PARAGRAPHS.flatMap((p,pi)=>p.items.map((x,si)=>({jp:x.jp,ko:x.ko,tip:x.tip,pi,si})));
+const READING_GROUPS=READING_PARAGRAPHS.map((p,pi)=>({jp:p.items.map(x=>x.jp).join(''),ko:p.items.map(x=>x.ko).join('\n'),tip:p.items.map(x=>x.tip).join('\n'),pi,si:-1}));
+const readEls=(id)=>document.getElementById(id);
+let readingMode=get('kanjiReadingUnitV1')==='paragraph'?'paragraph':'sentence';
+let readingDir=get('kanjiReadingDirV1')==='ko-ja'?'ko-ja':'ja-ko';
+let readingProgress=null,readRevealed=false;
+const readingItems=()=>readingMode==='sentence'?READING_SENTENCES:READING_GROUPS;
+const readingKey=()=>`kanjiReadingProgressV1_${readingMode}_${readingDir}`;
+const readingDraftKey=(index)=>`kanjiReadingDraftV1_${readingMode}_${readingDir}_${index}`;
+function newReadingProgress(round=1){const q=readingItems().map((_,i)=>i);if(readEls('readShuffle').checked)shuffle(q);return {round,pass:1,queue:q,failed:[],mastered:[],completed:false,awaitingRetry:false};}
+function validReadingProgress(v){const n=readingItems().length;if(!v||!Number.isInteger(v.round)||v.round<1||!Number.isInteger(v.pass)||v.pass<1||!Array.isArray(v.queue)||!Array.isArray(v.failed)||!Array.isArray(v.mastered)||typeof v.completed!=='boolean')return false;const arr=[...v.queue,...v.failed,...v.mastered];return arr.length===n&&new Set(arr).size===n&&arr.every(i=>Number.isInteger(i)&&i>=0&&i<n)}
+function loadReadingProgress(){const v=load(readingKey());readingProgress=validReadingProgress(v)?v:newReadingProgress();if(typeof readingProgress.awaitingRetry!=='boolean')readingProgress.awaitingRetry=!readingProgress.queue.length&&readingProgress.failed.length>0;save(readingKey(),readingProgress);readRevealed=false}
+function readCurrentIndex(){return readingProgress.queue[0]}
+function clearReadingAnswer(){readRevealed=false;readEls('readSolution').classList.add('is-hidden');readEls('readError').classList.add('is-hidden');readEls('readReveal').classList.remove('is-hidden')}
+function renderReading(){
+ if(!readingProgress)loadReadingProgress();
+ readEls('readUnit').value=readingMode;readEls('readDirection').value=readingDir;
+ readEls('readingSection').dataset.unit=readingMode;readEls('readingSection').dataset.direction=readingDir;
+ const s=readingProgress,total=readingItems().length,idx=readCurrentIndex(),isDone=s.completed,waiting=s.awaitingRetry;
+ readEls('readCycle').textContent=`${s.round}회독 · ${s.pass}차 확인`;
+ readEls('readCount').textContent=`외운 ${s.mastered.length} / ${total}개`;
+ readEls('readFill').style.width=`${total?100*s.mastered.length/total:0}%`;
+ readEls('readPractice').classList.toggle('is-hidden',isDone||waiting);
+ readEls('readRetry').classList.toggle('is-hidden',!waiting);
+ readEls('readDone').classList.toggle('is-hidden',!isDone);
+ readEls('readParagraphNext').classList.toggle('is-hidden',!(isDone&&readingMode==='sentence'));
+ if(waiting){readEls('readRetryCount').textContent=String(s.failed.length);return}
+ if(isDone){readEls('readDoneTitle').textContent=`${s.round}회독 완료! 🎉`;readEls('readNextBtn').textContent=`${s.round+1}회독 시작`;return}
+ if(idx===undefined){return}
+ const row=readingItems()[idx],pi=row.pi,paragraph=READING_PARAGRAPHS[pi],prompt=readingDir==='ja-ko'?row.jp:row.ko;
+ readEls('readLocator').textContent=`제${pi+1}문단 · ${paragraph.title}`+(readingMode==='sentence'?` · ${row.si+1}/${paragraph.items.length}문장`:' · 문단 전체');
+ readEls('readDirectionLabel').textContent=readingDir==='ja-ko'?'일본어 → 한국어':'한국어 → 일본어';
+ readEls('readPrompt').textContent=prompt;
+ readEls('readPrompt').lang=readingDir==='ja-ko'?'ja':'ko';
+ readEls('readWriteLabel').textContent=readingDir==='ja-ko'?'한국어로 직접 해석하세요':'일본어로 원문을 직접 적으세요';
+ readEls('readInput').placeholder=readingDir==='ja-ko'?'일본어를 읽고 한국어 해석을 적어 보세요.':'한국어를 보고 일본어 원문을 적어 보세요.';
+ readEls('readInput').value=get(readingDraftKey(idx))||'';
+ readEls('readInput').disabled=false;
+ readEls('readHint').open=false;
+ readEls('readHintText').textContent=row.tip;
+ clearReadingAnswer();
+}
+function changeReadingOptions(){readingMode=readEls('readUnit').value;readingDir=readEls('readDirection').value;set('kanjiReadingUnitV1',readingMode);set('kanjiReadingDirV1',readingDir);loadReadingProgress();renderReading()}
+function revealReading(){const i=readCurrentIndex(),raw=readEls('readInput').value.trim();if(i===undefined)return;if(!raw){readEls('readError').classList.remove('is-hidden');readEls('readInput').focus();return}
+ const row=readingItems()[i];readRevealed=true;readEls('readOwn').textContent=raw;readEls('readModel').textContent=readingDir==='ja-ko'?row.ko:row.jp;readEls('readSolution').classList.remove('is-hidden');readEls('readInput').disabled=true;readEls('readError').classList.add('is-hidden');readEls('readReveal').classList.add('is-hidden');
+}
+function markReading(known){const s=readingProgress;if(!readRevealed||!s||s.completed||s.awaitingRetry)return;const idx=s.queue.shift();if(idx===undefined)return;remove(readingDraftKey(idx));if(known)s.mastered.push(idx);else s.failed.push(idx);if(!s.queue.length){if(s.failed.length)s.awaitingRetry=true;else if(s.mastered.length===readingItems().length)s.completed=true}save(readingKey(),s);renderReading();}
+readEls('readUnit').onchange=changeReadingOptions;
+readEls('readDirection').onchange=changeReadingOptions;
+readEls('readInput').addEventListener('input',()=>{if(!readRevealed&&readingProgress&&!readingProgress.completed&&!readingProgress.awaitingRetry){const idx=readCurrentIndex();if(idx!==undefined)set(readingDraftKey(idx),readEls('readInput').value)}});
+readEls('readReveal').onclick=revealReading;
+readEls('readKnown').onclick=()=>markReading(true);
+readEls('readWrong').onclick=()=>markReading(false);
+readEls('readRetryBtn').onclick=()=>{const s=readingProgress;if(!s.awaitingRetry||!s.failed.length)return;s.queue=[...s.failed];s.failed=[];s.awaitingRetry=false;s.pass++;if(readEls('readShuffle').checked)shuffle(s.queue);save(readingKey(),s);renderReading()};
+readEls('readNextBtn').onclick=()=>{if(!readingProgress?.completed)return;readingProgress=newReadingProgress(readingProgress.round+1);save(readingKey(),readingProgress);renderReading()};
+readEls('readParagraphNext').onclick=()=>{readingMode='paragraph';set('kanjiReadingUnitV1','paragraph');loadReadingProgress();renderReading()};
+readEls('readShuffle').checked=get('kanjiReadingShuffleV1')==='yes';
+readEls('readShuffle').onchange=()=>set('kanjiReadingShuffleV1',readEls('readShuffle').checked?'yes':'no');
+readEls('readReset').onclick=()=>{if(!confirm('현재 선택한 강독 연습의 회독 기록을 초기화할까요?'))return;readingProgress=newReadingProgress();save(readingKey(),readingProgress);renderReading()};
+readEls('readUnit').value=readingMode;readEls('readDirection').value=readingDir;
+loadReadingProgress();
 
 </script>
 </body>
